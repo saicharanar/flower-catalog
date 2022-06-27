@@ -12,7 +12,7 @@ const contentType = (extension) => {
 
 const serveFileContent = ({ uri }, response, dir) => {
   if (uri === '/') {
-    uri = '/content.txt';
+    uri = '/homePage.html';
   }
 
   const fileName = dir + uri;
