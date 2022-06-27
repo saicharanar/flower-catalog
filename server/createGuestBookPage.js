@@ -9,8 +9,15 @@ const createGuestBookPage = (guestList) => {
   const list = createTag(['ul', {}, createList(guestList)]);
 
   const main = createTag(['main', {}, h3 + form + list]);
-  const header = createTag(['header', {}, ['h1', {}, 'Guest book']]);
+  const headerLink = createTag(['a', { href: 'homePage.html' }, '<< ']);
+
+  const header = createTag([
+    'header',
+    {},
+    ['h1', {}, headerLink + 'Guest Book'],
+  ]);
   const body = createTag(['body', {}, header + main]);
+
   return createTag(['html', {}, body]);
 };
 exports.createGuestBookPage = createGuestBookPage;

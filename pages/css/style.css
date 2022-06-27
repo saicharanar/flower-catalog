@@ -10,6 +10,20 @@ body {
   font-family: sans-serif;
 }
 
+main {
+  display: flex;
+}
+
+main p {
+  padding: 2em;
+  display: block;
+}
+
+.list a {
+  padding: 2em;
+  display: block;
+}
+
 h1 {
   padding: 1em;
   text-align: center;
