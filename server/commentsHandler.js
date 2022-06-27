@@ -2,31 +2,29 @@ const fs = require('fs');
 const { createGuestBookPage } = require('./createGuestBookPage');
 
 const getGuestsList = () => {
-  return fs.readFileSync('data/comments.json', 'utf8');
+  const guests = fs.readFileSync('data/comments.json', 'utf8');
+  if (guests === '') {
+    return [];
+  }
+
+  return JSON.parse(guests);
 };
 
 const loadComments = (request, response) => {
-  let guestList = [];
-  if (getGuestsList() !== '') {
-    guestList = JSON.parse(getGuestsList());
-  }
-
+  const guestList = getGuestsList();
   const page = createGuestBookPage(guestList);
   response.setHeader('Content-type', 'text/html');
   response.send(page);
 };
 
 const storeComments = (request, response) => {
-  let guests = getGuestsList();
-  if (guests === '') {
-    guests = [];
-  } else {
-    guests = JSON.parse(guests);
-  }
-
+  const guests = getGuestsList();
   const { name, comment } = request.queryParams;
-  const time = new Date().toLocaleTimeString();
-  const date = new Date().toLocaleDateString();
+
+  const currentDate = new Date();
+  const time = currentDate.toLocaleTimeString();
+  const date = currentDate.toLocaleDateString();
+
   guests.push({ name, comment, time, date });
   fs.writeFileSync('data/comments.json', JSON.stringify(guests), 'utf8');
   loadComments(request, response);
