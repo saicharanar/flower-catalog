@@ -15,6 +15,7 @@ const serveFileContent = ({ uri }, response, dir) => {
     uri = '/homePage.html';
   }
 
+  console.log(uri);
   const fileName = dir + uri;
   let content;
   try {
