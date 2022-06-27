@@ -17,7 +17,7 @@ const createForm = () => {
 
 const createMain = (guestList) => {
   const form = createForm();
-  const h3 = '<h3>Leave a comment</h3>';
+  const h3 = createTag(['h3', {}, 'Leave a comment']);
   const comments = createTag([
     'div',
     { class: 'comments' },
