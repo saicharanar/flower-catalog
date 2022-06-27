@@ -27,7 +27,6 @@ const storeComments = (request, response) => {
   const { name, comment } = request.queryParams;
   guests.push({ name, comment });
   fs.writeFileSync('data/comments.json', JSON.stringify(guests), 'utf8');
-
   loadComments(request, response);
 };
 
@@ -39,7 +38,7 @@ const commentsHandler = (request, response) => {
     return true;
   }
 
-  if (queryParams.name) {
+  if (queryParams.name && queryParams.comment) {
     storeComments(request, response);
     return true;
   }
