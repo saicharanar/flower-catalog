@@ -25,7 +25,9 @@ const storeComments = (request, response) => {
   }
 
   const { name, comment } = request.queryParams;
-  guests.push({ name, comment });
+  const time = new Date().toLocaleTimeString();
+  const date = new Date().toLocaleDateString();
+  guests.push({ name, comment, time, date });
   fs.writeFileSync('data/comments.json', JSON.stringify(guests), 'utf8');
   loadComments(request, response);
 };
