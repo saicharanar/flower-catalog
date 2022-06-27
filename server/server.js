@@ -2,6 +2,7 @@ const { createServer } = require('net');
 const { parseRequest } = require('./parseRequest');
 const { serveFileContent } = require('./serveFileContent.js');
 const { HTTPResponse } = require('./HTTPResponse');
+const { commentsHandler } = require('./commentsHandler');
 
 const handle = (handlers) => {
   return (request, response, dirName) => {
@@ -37,7 +38,7 @@ const startServer = (PORT, handle, dirName) => {
 };
 
 const main = (dirName) => {
-  const handlers = [serveFileContent];
+  const handlers = [commentsHandler, serveFileContent];
   startServer(8888, handle(handlers), dirName);
 };
 
