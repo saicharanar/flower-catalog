@@ -1,9 +1,10 @@
 # CURRENT
 
-- Make the server
+- [ ] Make the html pages for the flowers
 
 # TODO
 
-- Make the html pages for the flowers
-
 # DONE
+
+- [x] Make the server
+- [x] Get the serve file content handler.
