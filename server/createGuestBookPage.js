@@ -5,14 +5,14 @@ const createList = (list) => {
       return createTag([
         'div',
         {},
-        `${date} - ${time} <br> ${name} : ${comment} <br>`,
+        `${date} - ${time} <br> ${name} : ${comment} <br><br>`,
       ]);
     })
     .join('');
 };
 
 const createForm = () => {
-  return '<form action="comments" method="get"><label for="name">Name: </label><input type="text" name="name" id="name" /><label for="name">Comment: </label><input type="text" name="comment" id="comment" /><input type="submit" value="Submit" /></form>';
+  return '<form action="comments" method="get"><label for="name">Name: </label><input type="text" name="name" id="name" /><label for="comment">Comment: </label><textarea id="comment" name="comment" rows="5" cols="50"></textarea><input type="submit" value="Submit" /></form>';
 };
 
 const createMain = (guestList) => {
@@ -37,9 +37,22 @@ const createBody = (guestList) => {
   return createTag(['body', {}, header + main]);
 };
 
+const createHead = () => {
+  const link = createTag([
+    'link',
+    {
+      rel: 'stylesheet',
+      href: 'css/comments-style.css',
+    },
+  ]);
+
+  return createTag(['head', {}, link]);
+};
+
 const createGuestBookPage = (guestList) => {
+  const head = createHead();
   const body = createBody(guestList);
-  return createTag(['html', {}, body]);
+  return createTag(['html', {}, head + body]);
 };
 
 exports.createGuestBookPage = createGuestBookPage;
