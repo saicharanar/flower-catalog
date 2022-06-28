@@ -1,48 +1,54 @@
 const fs = require('fs');
 const { createGuestBookPage } = require('./createGuestBookPage');
+const { GuestBook } = require('./guestbook');
 
 const getGuestsList = () => {
   const guests = fs.readFileSync('data/comments.json', 'utf8');
   if (guests === '') {
     return [];
   }
-
   return JSON.parse(guests);
 };
 
-const loadComments = (request, response) => {
-  const guestList = getGuestsList();
-  const page = createGuestBookPage(guestList);
+const loadComments = (request, response, guestBook) => {
+  const page = createGuestBookPage(guestBook);
   response.setHeader('Content-type', 'text/html');
   response.send(page);
 };
 
-const storeComments = (request, response) => {
-  const guests = getGuestsList();
+const storeComments = (request, response, guestBook) => {
   const { name, comment } = request.queryParams;
 
   const currentDate = new Date();
   const time = currentDate.toLocaleTimeString();
   const date = currentDate.toLocaleDateString();
 
-  guests.push({ name, comment, time, date });
-  fs.writeFileSync('data/comments.json', JSON.stringify(guests), 'utf8');
-  loadComments(request, response);
+  guestBook.addGuest({ name, comment, time, date });
+  response.statusCode = 301;
+  response.setHeader('Location', '/comments');
+  response.send('');
 };
 
-const commentsHandler = (request, response) => {
-  const { uri, queryParams } = request;
+const commentsHandler = () => {
+  const storageFile = 'data/comments.json';
+  const guests = getGuestsList();
+  const guestBook = new GuestBook(guests, storageFile);
+  console.log(guestBook.html());
 
-  if (uri === '/guestbook.html') {
-    loadComments(request, response);
-    return true;
-  }
+  return (request, response) => {
+    const { uri, queryParams } = request;
 
-  if (queryParams.name && queryParams.comment) {
-    storeComments(request, response);
+    if (uri !== '/comments') {
+      return false;
+    }
+
+    if (queryParams.name && queryParams.comment) {
+      storeComments(request, response, guestBook);
+      return true;
+    }
+    loadComments(request, response, guestBook);
     return true;
-  }
-  return false;
+  };
 };
 
 module.exports = { commentsHandler };

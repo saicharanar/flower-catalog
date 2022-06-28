@@ -1,58 +1,42 @@
 const { createTag } = require('./createTag');
-const createList = (list) => {
-  return list
-    .map(({ name, comment, time, date }) => {
-      return createTag([
-        'div',
-        {},
-        `${date} - ${time} <br> ${name} : ${comment} <br><br>`,
-      ]);
-    })
-    .join('');
-};
 
-const createForm = () => {
-  return '<form action="comments" method="get"><label for="name">Name: </label><input type="text" name="name" id="name" /><label for="comment">Comment: </label><textarea id="comment" name="comment" rows="5" cols="50"></textarea><input type="submit" value="Submit" /></form>';
-};
-
-const createMain = (guestList) => {
-  const form = createForm();
-  const h3 = createTag(['h3', {}, 'Leave a comment']);
-  const comments = createTag([
-    'div',
-    { class: 'comments' },
-    createList(guestList),
-  ]);
-  return createTag(['main', {}, h3 + form + comments]);
-};
-
-const createBody = (guestList) => {
-  const main = createMain(guestList);
-  const headerLink = createTag(['a', { href: 'homePage.html' }, '<< ']);
-  const header = createTag([
-    'header',
+const createGuestBookPage = (guestbook) => {
+  return createTag([
+    'html',
     {},
-    ['h1', {}, headerLink + 'Guest Book'],
+    [
+      'head',
+      {},
+      ['link', { rel: 'stylesheet', href: 'css/comments-style.css' }],
+    ],
+    [
+      'body',
+      {},
+      [
+        'header',
+        {},
+        ['h1', {}, ['a', { href: 'homePage.html' }], 'Guest Book'],
+      ],
+      [
+        'main',
+        {},
+        ['h3', {}, 'leave a comment'],
+        [
+          'form',
+          { action: 'comments', method: 'get' },
+          ['label', { for: 'Name' }, 'Name'],
+          ['input', { type: 'text', name: 'name', id: 'name' }],
+          ['label', { for: 'comment' }, 'comment'],
+          [
+            'textarea',
+            { id: 'comment', name: 'comment', rows: '5', cols: '50' },
+          ],
+          ['input', { type: 'submit', value: 'Submit' }],
+        ],
+        ['div', { class: 'comments' }, guestbook.html()],
+      ],
+    ],
   ]);
-  return createTag(['body', {}, header + main]);
-};
-
-const createHead = () => {
-  const link = createTag([
-    'link',
-    {
-      rel: 'stylesheet',
-      href: 'css/comments-style.css',
-    },
-  ]);
-
-  return createTag(['head', {}, link]);
-};
-
-const createGuestBookPage = (guestList) => {
-  const head = createHead();
-  const body = createBody(guestList);
-  return createTag(['html', {}, head + body]);
 };
 
 exports.createGuestBookPage = createGuestBookPage;

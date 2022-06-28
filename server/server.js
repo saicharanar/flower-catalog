@@ -39,7 +39,7 @@ const startServer = (PORT, handle, dirName) => {
 };
 
 const main = (dirName) => {
-  const handlers = [commentsHandler, serveFileContent, downloadsHandler];
+  const handlers = [commentsHandler(), serveFileContent, downloadsHandler];
   startServer(8888, handle(handlers), dirName);
 };
 
