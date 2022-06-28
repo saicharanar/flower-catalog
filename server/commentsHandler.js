@@ -33,7 +33,6 @@ const commentsHandler = () => {
   const storageFile = 'data/comments.json';
   const guests = getGuestsList();
   const guestBook = new GuestBook(guests, storageFile);
-  console.log(guestBook.html());
 
   return (request, response) => {
     const { uri, queryParams } = request;
