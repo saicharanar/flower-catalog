@@ -11,7 +11,6 @@ const getGuestsList = (srcFile) => {
 };
 
 const writeTo = (srcFile, content) => {
-  console.log(srcFile, content);
   fs.writeFileSync(srcFile, content, 'utf8');
 };
 
