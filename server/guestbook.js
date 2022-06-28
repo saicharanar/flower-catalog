@@ -3,19 +3,16 @@ const fs = require('fs');
 
 class GuestBook {
   #guests;
-  #storageFile;
-  constructor(guests, storageFile) {
+  constructor(guests) {
     this.#guests = guests;
-    this.#storageFile = storageFile;
-  }
-
-  #write() {
-    fs.writeFileSync(this.#storageFile, JSON.stringify(this.#guests), 'utf8');
   }
 
   addGuest(guest) {
     this.#guests.push(guest);
-    this.#write();
+  }
+
+  getGuests() {
+    return JSON.stringify(this.#guests);
   }
 
   html() {
