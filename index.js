@@ -1,13 +1,9 @@
 const { app } = require('./src/app/app');
 const { initializeServer } = require('./src/server/server');
 
-const main = (serveFrom) => {
-  const config = {
-    serveFrom: './public',
-    guestBookPath: 'data/comments.json',
-  };
-
-  initializeServer(8888, app(config));
+const main = () => {
+  const { serveFrom, guestBookPath } = process.env;
+  initializeServer(8888, app({ serveFrom, guestBookPath }));
 };
 
-main(process.argv[2]);
+main();
