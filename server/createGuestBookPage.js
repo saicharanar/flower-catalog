@@ -1,4 +1,4 @@
-const { createTag } = require('./createTag');
+const { createTag } = require('Tag');
 
 const createGuestBookPage = (guestbook) => {
   return createTag([

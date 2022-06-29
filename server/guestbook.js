@@ -1,4 +1,4 @@
-const { createTag } = require('./createTag');
+const { createTag } = require('tag');
 const fs = require('fs');
 
 class GuestBook {

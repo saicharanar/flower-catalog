@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "server": "github:saicharanar/server"
+    "server": "github:saicharanar/server",
+    "tag": "github:saicharanar/createTag"
   }
 }
