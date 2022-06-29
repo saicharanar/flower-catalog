@@ -38,7 +38,7 @@ class GuestBook {
     this.#save();
   }
 
-  getShowGuestsHandler(request, response) {
+  showGuestsHandler(request, response) {
     this.initialize();
     const page = createGuestBookPage(this.html());
     response.setHeader('Content-type', 'text/html');
@@ -47,7 +47,7 @@ class GuestBook {
     return true;
   }
 
-  getAddGuestsHandler(request, response) {
+  addGuestsHandler(request, response) {
     const name = request.url.searchParams.get('name');
     const comment = request.url.searchParams.get('comment');
     if (!(name && comment)) {

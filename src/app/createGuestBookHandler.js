@@ -6,12 +6,12 @@ const createGuestBookHandler = ({ guestBookPath }) => {
   return (request, response) => {
     const pathname = request.url.pathname;
     if (pathname === '/show-guest-book' && request.method === 'GET') {
-      guestBook.getShowGuestsHandler(request, response);
+      guestBook.showGuestsHandler(request, response);
       return true;
     }
 
     if (pathname === '/add-guest' && request.method === 'GET') {
-      guestBook.getAddGuestsHandler(request, response);
+      guestBook.addGuestsHandler(request, response);
       return true;
     }
 
