@@ -21,20 +21,22 @@ const timeStamp = () => {
   return { time, date };
 };
 
-const loadComments = (request, response, guestBook) => {
+const showComments = (request, response, guestBook) => {
   const page = createGuestBookPage(guestBook);
   response.setHeader('Content-type', 'text/html');
-  response.send(page);
+  response.write(page);
+  response.end();
 };
 
-const storeComments = (request, response, guestBook, srcFile) => {
-  const { name, comment } = request.queryParams;
+const storeComments = (request, response, guestBook) => {
+  const name = request.url.searchParams.get('name');
+  const comment = request.url.searchParams.get('comment');
   const { time, date } = timeStamp();
 
   guestBook.addGuest({ name, comment, time, date });
   response.statusCode = 301;
   response.setHeader('Location', '/comments');
-  response.send('');
+  response.end();
 };
 
 const commentsHandler = () => {
@@ -43,18 +45,21 @@ const commentsHandler = () => {
   const guestBook = new GuestBook(guests);
 
   return (request, response) => {
-    const { uri, queryParams } = request;
-    if (uri !== '/comments') {
+    const pathname = request.url.pathname;
+    if (!(pathname === '/comments' && request.method === 'GET')) {
       return false;
     }
 
-    if (queryParams.name && queryParams.comment) {
+    const name = request.url.searchParams.get('name');
+    const comment = request.url.searchParams.get('comment');
+
+    if (name && comment) {
       storeComments(request, response, guestBook);
       writeTo(srcFile, guestBook.getGuests());
       return true;
     }
 
-    loadComments(request, response, guestBook);
+    showComments(request, response, guestBook);
     return true;
   };
 };
