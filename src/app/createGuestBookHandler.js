@@ -1,6 +1,6 @@
 const { GuestBook } = require('./guestbook');
 
-const createGuestBookHandler = (guestBookPath) => {
+const createGuestBookHandler = ({ guestBookPath }) => {
   const guestBook = new GuestBook(guestBookPath);
 
   return (request, response) => {

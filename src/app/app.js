@@ -2,9 +2,8 @@ const { serveFileContent } = require('./serveFileContent');
 const { createGuestBookHandler } = require('./createGuestBookHandler');
 
 const app = (config) => {
-  const { serveFrom, guestBookPath } = config;
-  const guestBookHandler = createGuestBookHandler(guestBookPath);
-  return [guestBookHandler, serveFileContent(serveFrom)];
+  const guestBookHandler = createGuestBookHandler(config);
+  return [guestBookHandler, serveFileContent(config)];
 };
 
 module.exports = { app };

@@ -39,9 +39,9 @@ const serve = (req, res, resourceDir) => {
   return true;
 };
 
-const serveFileContent = (resourceDir) => {
+const serveFileContent = ({ serveFrom }) => {
   return (req, res) => {
-    return serve(req, res, resourceDir);
+    return serve(req, res, serveFrom);
   };
 };
 
