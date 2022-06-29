@@ -1,10 +1,7 @@
-const { serveFileContent } = require('../app/serveFileContent.js');
-const { commentsHandler } = require('../app/commentsHandler');
 const { startServer } = require('server');
 
-const app = (dirName) => {
-  const handlers = [commentsHandler(), serveFileContent(dirName)];
-  startServer(8888, ...handlers);
+const initializeServer = (port, appHandlers) => {
+  startServer(port, ...appHandlers);
 };
 
-app(process.argv[2]);
+module.exports = { initializeServer };
