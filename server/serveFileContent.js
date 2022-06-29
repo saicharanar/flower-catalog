@@ -1,21 +1,29 @@
 const fs = require('fs');
+const path = require('path');
 
 const contentType = (extension) => {
   const contentTypes = {
-    html: 'text/html',
-    css: 'text/css',
-    txt: 'text/plain',
+    '.html': 'text/html',
+    '.css': 'text/css',
+    '.txt': 'text/plain',
+    '.jpg': 'image/jpeg',
   };
 
   return contentTypes[extension];
 };
 
-const serveFileContent = ({ uri }, response, dir) => {
-  if (uri === '/') {
-    uri = '/homePage.html';
+const serve = (req, res, resourceDir) => {
+  if (req.method !== 'GET') {
+    return false;
   }
 
-  const fileName = dir + uri;
+  let pathname = req.url.pathname;
+  if (pathname === '/') {
+    pathname = '/homePage.html';
+  }
+
+  console.log(resourceDir, pathname);
+  const fileName = path.join(resourceDir, pathname);
   let content;
   try {
     content = fs.readFileSync(fileName);
@@ -23,12 +31,18 @@ const serveFileContent = ({ uri }, response, dir) => {
     return false;
   }
 
-  const extIndex = fileName.indexOf('.');
-  const extension = fileName.slice(extIndex + 1);
-  response.setHeader('Content-type', contentType(extension));
-  response.setHeader('Content-length', content.length);
-  response.send(content);
+  const extension = path.extname(fileName);
+  res.setHeader('Content-type', contentType(extension));
+  res.setHeader('Content-length', content.length);
+  res.write(content);
+  res.end();
   return true;
+};
+
+const serveFileContent = (resourceDir) => {
+  return (req, res) => {
+    return serve(req, res, resourceDir);
+  };
 };
 
 module.exports = { serveFileContent };
