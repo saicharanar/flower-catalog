@@ -7,7 +7,6 @@ const main = (dirName) => {
   const handlers = [
     // commentsHandler(),
     serveFileContent(dirName),
-    // downloadsHandler,
   ];
   startServer(8888, ...handlers);
 };

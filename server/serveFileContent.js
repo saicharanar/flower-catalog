@@ -7,6 +7,7 @@ const contentType = (extension) => {
     '.css': 'text/css',
     '.txt': 'text/plain',
     '.jpg': 'image/jpeg',
+    '.pdf': 'application/pdf',
   };
 
   return contentTypes[extension];
