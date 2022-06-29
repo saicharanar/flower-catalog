@@ -1,5 +1,5 @@
-const { serveFileContent } = require('./serveFileContent.js');
-const { commentsHandler } = require('./commentsHandler');
+const { serveFileContent } = require('../app/serveFileContent.js');
+const { commentsHandler } = require('../app/commentsHandler');
 const { startServer } = require('server');
 
 const app = (dirName) => {
