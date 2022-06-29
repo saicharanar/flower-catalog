@@ -23,7 +23,7 @@ const createGuestBookPage = (guestbook) => {
         ['h3', {}, 'leave a comment'],
         [
           'form',
-          { action: 'comments', method: 'get' },
+          { action: 'add-guest', method: 'get' },
           ['label', { for: 'Name' }, 'Name'],
           ['input', { type: 'text', name: 'name', id: 'name' }],
           ['label', { for: 'comment' }, 'comment'],
@@ -33,7 +33,7 @@ const createGuestBookPage = (guestbook) => {
           ],
           ['input', { type: 'submit', value: 'Submit' }],
         ],
-        ['div', { class: 'comments' }, guestbook.html()],
+        ['div', { class: 'comments' }, guestbook],
       ],
     ],
   ]);
