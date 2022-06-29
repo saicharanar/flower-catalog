@@ -23,7 +23,6 @@ const serve = (req, res, resourceDir) => {
     pathname = '/homePage.html';
   }
 
-  console.log(resourceDir, pathname);
   const fileName = path.join(resourceDir, pathname);
   let content;
   try {
