@@ -16,6 +16,7 @@ const createGuestBookPage = (guestbook) => {
         'header',
         {},
         ['h1', {}, ['a', { href: 'homePage.html' }, '<<'], 'Guest Book'],
+        ['a', { href: '/logout' }, 'logout'],
       ],
       [
         'main',

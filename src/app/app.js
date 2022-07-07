@@ -1,10 +1,20 @@
-const { serveFileContent } = require('./serveFileContent');
 const { createGuestBookHandler } = require('./createGuestBookHandler');
-const { fileHandler } = require('server');
+const { fileHandler, injectCookies, injectSessions } = require('server');
+const { signupRouter } = require('./signupHandler');
+const { loginRouter } = require('./loginHandler');
+const { logoutHandler } = require('./logoutHandler');
 
 const app = (config) => {
   const guestBookHandler = createGuestBookHandler(config);
-  return [guestBookHandler, fileHandler(config)];
+  return [
+    injectCookies,
+    injectSessions(),
+    signupRouter,
+    loginRouter,
+    logoutHandler,
+    guestBookHandler,
+    fileHandler(config),
+  ];
 };
 
 module.exports = { app };
