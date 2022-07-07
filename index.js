@@ -3,7 +3,14 @@ const { initializeServer } = require('./src/server/server');
 
 const main = () => {
   const { serveFrom, guestBookPath } = process.env;
-  initializeServer(8888, app({ serveFrom, guestBookPath }));
+  const config = {
+    guestBookPath,
+    fileOptions: {
+      defaultFile: 'homepage.html',
+      path: serveFrom,
+    },
+  };
+  initializeServer(8888, app(config));
 };
 
 main();
