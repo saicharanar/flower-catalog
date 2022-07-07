@@ -39,6 +39,11 @@ class GuestBook {
   }
 
   showGuestsHandler(request, response) {
+    if (!request.session) {
+      response.end('access-denied');
+      return;
+    }
+
     this.initialize();
     const page = createGuestBookPage(this.html());
     response.setHeader('Content-type', 'text/html');
