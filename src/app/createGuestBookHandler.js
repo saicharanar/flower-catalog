@@ -10,7 +10,7 @@ const createGuestBookHandler = ({ guestBookPath }) => {
       return;
     }
 
-    if (pathname === '/add-guest' && request.method === 'GET') {
+    if (pathname === '/add-guest' && request.method === 'POST') {
       guestBook.addGuestsHandler(request, response);
       return;
     }

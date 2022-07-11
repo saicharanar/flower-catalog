@@ -53,17 +53,15 @@ class GuestBook {
   }
 
   addGuestsHandler(request, response) {
-    const name = request.url.searchParams.get('name');
-    const comment = request.url.searchParams.get('comment');
+    const { name, comment } = request.bodyParams;
     if (!(name && comment)) {
       return false;
     }
 
     const { date, time } = timeStamp();
     this.insert({ name, comment, date, time });
-    response.statusCode = 301;
-    response.setHeader('Location', '/show-guest-book');
-    response.end();
+    response.setHeader('Content-type', 'text/html');
+    response.end(this.html());
     return true;
   }
 

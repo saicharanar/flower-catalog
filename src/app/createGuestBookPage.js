@@ -8,6 +8,7 @@ const createGuestBookPage = (guestbook) => {
       'head',
       {},
       ['link', { rel: 'stylesheet', href: 'css/comments-style.css' }],
+      ['script', { src: 'guestBookScript.js' }],
     ],
     [
       'body',
@@ -24,7 +25,7 @@ const createGuestBookPage = (guestbook) => {
         ['h3', {}, 'leave a comment'],
         [
           'form',
-          { action: 'add-guest', method: 'get' },
+          { action: 'add-guest', method: 'post' },
           ['label', { for: 'Name' }, 'Name'],
           ['input', { type: 'text', name: 'name', id: 'name' }],
           ['label', { for: 'comment' }, 'comment'],
@@ -32,9 +33,9 @@ const createGuestBookPage = (guestbook) => {
             'textarea',
             { id: 'comment', name: 'comment', rows: '5', cols: '50' },
           ],
-          ['input', { type: 'submit', value: 'Submit' }],
+          ['button', { id: 'submit' }, 'Submit'],
         ],
-        ['div', { class: 'comments' }, guestbook],
+        ['div', { id: 'comments' }, guestbook],
       ],
     ],
   ]);
