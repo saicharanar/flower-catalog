@@ -1,7 +1,7 @@
 const { startServer } = require('server');
 
-const initializeServer = (port, appHandlers) => {
-  startServer(port, appHandlers);
+const initializeServer = (port, router) => {
+  startServer(port, router);
 };
 
 module.exports = { initializeServer };

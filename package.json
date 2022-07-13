@@ -2,5 +2,9 @@
   "dependencies": {
     "server": "github:saicharanar/server",
     "tag": "github:saicharanar/createTag"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0",
+    "supertest": "^6.2.4"
   }
 }

@@ -1,5 +1,6 @@
 const { createGuestBookHandler } = require('./createGuestBookHandler');
 const {
+  createRouter,
   parseBodyParams,
   fileHandler,
   injectCookies,
@@ -11,7 +12,7 @@ const { logoutHandler } = require('./logoutHandler');
 
 const app = (config) => {
   const guestBookHandler = createGuestBookHandler(config);
-  return [
+  return createRouter([
     parseBodyParams,
     injectCookies,
     injectSessions(),
@@ -20,7 +21,7 @@ const app = (config) => {
     logoutHandler,
     guestBookHandler,
     fileHandler(config),
-  ];
+  ]);
 };
 
 module.exports = { app };
