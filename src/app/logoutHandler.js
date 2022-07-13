@@ -1,7 +1,7 @@
 const logoutHandler = (req, res, next) => {
   const { pathname } = req.url;
 
-  if (pathname !== '/logout' && req.method !== 'GET') {
+  if (pathname !== '/logout' || req.method !== 'GET') {
     next();
     return;
   }

@@ -40,6 +40,7 @@ class GuestBook {
 
   showGuestsHandler(request, response) {
     if (!request.session) {
+      response.statusCode = 401;
       response.end('access-denied');
       return;
     }
@@ -54,8 +55,10 @@ class GuestBook {
 
   addGuestsHandler(request, response) {
     const { name, comment } = request.bodyParams;
-    if (!(name && comment)) {
-      return false;
+    if (!name || !comment) {
+      response.statusCode = 304;
+      response.end();
+      return;
     }
 
     const { date, time } = timeStamp();
