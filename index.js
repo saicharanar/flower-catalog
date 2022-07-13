@@ -11,7 +11,8 @@ const main = () => {
     },
   };
   const sessionsStored = {};
-  initializeServer(8888, app(config, sessionsStored));
+  const users = {};
+  initializeServer(8888, app(config, sessionsStored, users));
 };
 
 main();

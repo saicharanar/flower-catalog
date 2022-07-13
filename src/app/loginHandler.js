@@ -1,24 +1,37 @@
 const { createFormPage } = require('./createFormPage');
 
+const createSession = (username) => {
+  const time = new Date();
+  const sessionId = time.getTime();
+  return { time, username, sessionId };
+};
+
 const validateLogin = (req, res, next) => {
-  const { username } = req.bodyParams;
-  if (!req.session || !username) {
+  const { username, password } = req.bodyParams;
+  const user = req.users[username];
+
+  if (!user || !username || !password) {
     res.statusCode = 304;
     res.end();
     return;
   }
 
-  if (username === req.session.username) {
+  if (user.password !== password) {
+    res.statusCode = 304;
+    res.end();
+    return;
+  }
+
+  if (username === user.username && password === user.password) {
+    const session = createSession(username);
+    req.sessions[session.sessionId] = session;
     res.statusCode = 302;
+    res.setHeader('Set-Cookie', `sessionId=${session.sessionId}`);
     res.setHeader('Location', '/show-guest-book');
-    res.end();
+    res.end('New Session created');
     return;
-  } else {
-    res.statusCode = 304;
-    res.end();
   }
 
-  return;
 };
 
 const loginRouter = (req, res, next) => {

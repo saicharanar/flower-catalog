@@ -22,28 +22,39 @@ describe('/login', () => {
   });
 
   describe('POST', () => {
-    it('Should give 304 when no username specified', (done) => {
+    it('Should give 304 when no username or password specified', (done) => {
       req
         .post('/login')
         .send('age=10')
         .expect(304, done)
     });
 
-    it('Should give 304 when no session is alive', (done) => {
+    it('Should give 304 when no user is registered', (done) => {
       req
         .post('/login')
         .send('age=10')
         .expect(304, done)
     });
 
-    it('Should give 302 when a valid user logged', (done) => {
-      const sessionsStored = { 123: { sessionId: 123, username: 'sai' } };
-      request(app(config, sessionsStored))
+    it('Should give 302 when a valid user logged and creates a session', (done) => {
+      const sessionsStored = {};
+      const users = { sai: { username: 'sai', password: 'a' } };
+      request(app(config, sessionsStored, users))
         .post('/login')
-        .set('Cookie', 'sessionId=123')
-        .send('username=sai')
+        .send('username=sai&password=a')
+        .expect('New Session created')
+        .expect('Set-Cookie', /sessionId/)
         .expect('location', '/show-guest-book')
         .expect(302, done)
+    });
+
+    it('Should give 304 when a invalid credentials given', (done) => {
+      const sessionsStored = {};
+      const users = { sai: { username: 'sai', password: 'a' } };
+      request(app(config, sessionsStored, users))
+        .post('/login')
+        .send('username=sai&password=b')
+        .expect(304, done)
     });
   });
 });

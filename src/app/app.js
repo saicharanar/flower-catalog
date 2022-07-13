@@ -9,11 +9,13 @@ const {
 const { signupRouter } = require('./signupHandler');
 const { loginRouter } = require('./loginHandler');
 const { logoutHandler } = require('./logoutHandler');
+const { injectUsers } = require('../injectUsers');
 
-const app = (config, sessions) => {
+const app = (config, sessions, users) => {
   const guestBookHandler = createGuestBookHandler(config);
   return createRouter([
     parseBodyParams,
+    injectUsers(users),
     injectCookies,
     injectSessions(sessions),
     signupRouter,

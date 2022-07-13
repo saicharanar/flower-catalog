@@ -11,7 +11,8 @@ const logoutHandler = (req, res, next) => {
     return;
   }
 
-  const { username } = req.session;
+  const { username, sessionId } = req.session;
+  delete req.sessions[sessionId];
   delete req.session;
   res.statusCode = 302;
   res.setHeader('Set-Cookie', `sessionId=${req.cookies.sessionId};Max-Age=0`);

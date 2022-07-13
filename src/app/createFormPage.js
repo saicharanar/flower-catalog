@@ -9,6 +9,8 @@ const createFormPage = (action, altAction) => {
       {},
       ['label', { for: 'username' }, 'username'],
       ['input', { type: 'text', name: 'username' }],
+      ['label', { for: 'password' }, 'password'],
+      ['input', { type: 'password', name: 'password' }],
     ],
     ['input', { type: 'submit', value: 'Submit' }],
     ['div', {}, ['a', { href: `/${altAction}` }, altAction.toUpperCase()]],

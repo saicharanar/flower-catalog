@@ -1,19 +1,12 @@
 const { createFormPage } = require('./createFormPage');
 const { createTag } = require('tag');
 
-const createSession = (username) => {
-  const time = new Date();
-  const sessionId = time.getTime();
-  return { time, username, sessionId };
-};
-
-const createUser = (req, res, next, username) => {
-  const session = createSession(username);
-  req.sessions[session.sessionId] = session;
+const createUser = (req, res, next) => {
+  const { username, password } = req.bodyParams;
+  req.users[username] = { username, password };
   res.statusCode = 302;
-  res.setHeader('Set-Cookie', `sessionId=${session.sessionId}`);
-  res.setHeader('Location', '/login');
-  res.end();
+  res.setHeader('Location', '/');
+  res.end('Registered Successfully');
   return;
 };
 
@@ -24,7 +17,7 @@ const serveSignUpPage = (req, res, next) => {
 };
 
 const warnInvalidUserName = (req, res, next) => {
-  const invalidMessage = 'Not a valid username';
+  const invalidMessage = 'Not a valid response';
   const message = createTag(['div', {}, invalidMessage]);
   const page = createFormPage('signup', 'login');
   res.setHeader('Content-type', 'text/html');
@@ -44,9 +37,9 @@ const signupRouter = (req, res, next) => {
     return;
   }
 
-  const { username } = req.bodyParams;
-  if (req.method === 'POST' && username) {
-    createUser(req, res, next, username);
+  const { username, password } = req.bodyParams;
+  if (req.method === 'POST' && username && password) {
+    createUser(req, res, next);
     return;
   } else {
     warnInvalidUserName(req, res, next);
