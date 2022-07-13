@@ -2,7 +2,7 @@ const request = require('supertest');
 const { app } = require('../src/app/app');
 
 const config = {
-  guestBookPath: 'data/testComments.json',
+  guestBookPath: 'test/data/testComments.json',
   fileOptions: {
     defaultFile: 'homepage.html',
     path: 'public',
