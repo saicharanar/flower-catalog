@@ -10,7 +10,8 @@ const main = () => {
       path: serveFrom,
     },
   };
-  initializeServer(8888, app(config));
+  const sessionsStored = {};
+  initializeServer(8888, app(config, sessionsStored));
 };
 
 main();

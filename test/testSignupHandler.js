@@ -11,22 +11,13 @@ const config = {
 const sessionsStored = {};
 const req = request(app(config, sessionsStored));
 
-describe('/login', () => {
+describe('/signup', () => {
   describe('GET', () => {
-    it('Should should give back an html', (done) => {
+    it('Should give a html page back', (done) => {
       req
-        .get('/login')
-        .expect('Content-type', /html/)
+        .get('/signup')
+        .expect('content-type', /html/)
         .expect(200, done);
     });
   });
-  describe('POST', () => {
-    it('Should give 304 when no username specified', (done) => {
-      req
-        .post('/login')
-        .send('age=10')
-        .expect(304, done)
-    });
-  });
 });
-

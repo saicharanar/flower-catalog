@@ -10,12 +10,12 @@ const { signupRouter } = require('./signupHandler');
 const { loginRouter } = require('./loginHandler');
 const { logoutHandler } = require('./logoutHandler');
 
-const app = (config) => {
+const app = (config, sessions) => {
   const guestBookHandler = createGuestBookHandler(config);
   return createRouter([
     parseBodyParams,
     injectCookies,
-    injectSessions(),
+    injectSessions(sessions),
     signupRouter,
     loginRouter,
     logoutHandler,
