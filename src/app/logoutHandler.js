@@ -1,12 +1,13 @@
 const logoutHandler = (req, res, next) => {
   const { pathname } = req.url;
 
-  if (pathname !== '/logout') {
+  if (pathname !== '/logout' && req.method !== 'GET') {
     next();
     return;
   }
 
   if (!req.session) {
+    res.statusCode = 401;
     res.end('Please login first');
     return;
   }
