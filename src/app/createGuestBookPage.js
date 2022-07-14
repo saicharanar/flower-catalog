@@ -25,7 +25,7 @@ const createGuestBookPage = (guestbook) => {
         ['h3', {}, 'leave a comment'],
         [
           'form',
-          { action: 'add-guest', method: 'post' },
+          { action: '#' },
           ['label', { for: 'Name' }, 'Name'],
           ['input', { type: 'text', name: 'name', id: 'name' }],
           ['label', { for: 'comment' }, 'comment'],

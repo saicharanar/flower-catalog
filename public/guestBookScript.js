@@ -1,9 +1,9 @@
 (() => {
   const updateGuestList = (event) => {
-    const commentsView = document.querySelector('#comments');
     const formData = new FormData(event.target.form);
     const name = formData.get('name');
     const comment = formData.get('comment');
+    const commentsView = document.querySelector('#comments');
 
     const xhr = new XMLHttpRequest();
     xhr.onload = () => {
