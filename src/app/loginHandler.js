@@ -7,7 +7,7 @@ const createSession = (username) => {
 };
 
 const validateLogin = (req, res, next) => {
-  const { username, password } = req.bodyParams;
+  const { username, password } = req.body;
   const user = req.users[username];
 
   if (!user || !username || !password) {
@@ -26,40 +26,24 @@ const validateLogin = (req, res, next) => {
     const session = createSession(username);
     req.sessions[session.sessionId] = session;
     res.statusCode = 302;
-    res.setHeader('Set-Cookie', `sessionId=${session.sessionId}`);
-    res.setHeader('Location', '/show-guest-book');
+    res.cookie(`sessionId=${session.sessionId}`);
+    res.set('Location', '/show-guest-book');
     res.end('New Session created');
     return;
   }
 
 };
 
-const loginRouter = (req, res, next) => {
-  const { pathname } = req.url;
-  if (pathname !== '/login') {
-    next();
-    return;
-  }
-
-  if (req.method === 'GET' && req.session) {
-    res.statusCode = 302;
-    res.setHeader('Location', '/show-guest-book');
+const serveLoginPage = (req, res) => {
+  if (req.session) {
+    res.redirect('/show-guest-book');
     res.end();
     return;
   }
-
-  if (req.method === 'GET') {
-    res.setHeader('Content-type', 'text/html');
-    res.end(createFormPage('login', 'signup'));
-    return;
-  }
-
-  if (req.method === 'POST') {
-    validateLogin(req, res, next);
-    return;
-  }
-
-  next();
+  res.set('Content-type', 'text/html');
+  res.end(createFormPage('login', 'signup'));
+  return;
 };
 
-module.exports = { loginRouter };
+
+module.exports = { serveLoginPage, validateLogin };

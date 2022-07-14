@@ -40,8 +40,8 @@ class GuestBook {
 
   showGuestsHandler(request, response) {
     if (!request.session) {
-      response.statusCode = 401;
-      response.end('access-denied');
+      response.sendStatus(401);
+      response.end();
       return;
     }
 
@@ -54,16 +54,16 @@ class GuestBook {
   }
 
   addGuestsHandler(request, response) {
-    const { name, comment } = request.bodyParams;
+    const { name, comment } = request.body;
     if (!name || !comment) {
-      response.statusCode = 304;
+      response.sendStatus(304);
       response.end();
       return;
     }
 
     const { date, time } = timeStamp();
     this.insert({ name, comment, date, time });
-    response.setHeader('Content-type', 'text/html');
+    response.set('Content-type', 'text/html');
     response.end(this.html());
     return true;
   }

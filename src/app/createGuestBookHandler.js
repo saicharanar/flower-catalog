@@ -3,19 +3,17 @@ const { GuestBook } = require('./guestbook');
 const createGuestBookHandler = ({ guestBookPath }) => {
   const guestBook = new GuestBook(guestBookPath);
 
-  return (request, response, next) => {
-    const pathname = request.url.pathname;
-    if (pathname === '/show-guest-book' && request.method === 'GET') {
-      guestBook.showGuestsHandler(request, response);
-      return;
-    }
+  const showGuests = (req, res, next) => {
+    guestBook.showGuestsHandler(req, res);
+  }
 
-    if (pathname === '/add-guest' && request.method === 'POST') {
-      guestBook.addGuestsHandler(request, response);
-      return;
-    }
+  const addGuest = (req, res, next) => {
+    guestBook.addGuestsHandler(req, res);
+  }
 
-    next();
+  return () => {
+    return { showGuests, addGuest }
   };
-};
+}
+
 exports.createGuestBookHandler = createGuestBookHandler;

@@ -1,18 +1,19 @@
-const { app } = require('./src/app/app');
+const { main } = require('./src/app/app');
 const { initializeServer } = require('./src/server/server');
 
-const main = () => {
+const start = () => {
   const { serveFrom, guestBookPath } = process.env;
   const config = {
-    guestBookPath,
+    guestBookPath: 'data/comments.json',
     fileOptions: {
       defaultFile: 'homepage.html',
-      path: serveFrom,
+      path: 'public',
     },
   };
   const sessionsStored = {};
   const users = {};
-  initializeServer(8888, app(config, sessionsStored, users));
+
+  main(8888, config, sessionsStored, users);
 };
 
-main();
+start();

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../src/app/app');
+const { initializeApp } = require('../src/app/app');
 
 const config = {
   guestBookPath: 'test/data/testComments.json',
@@ -8,18 +8,22 @@ const config = {
     path: 'public',
   },
 };
+const sessionsStored = {};
+const users = {};
+const req = request(initializeApp(1111, config, sessionsStored, users));
+
 
 describe('GET /show-guest-book', () => {
   it('Should give 401 when user not logged in', (done) => {
-    request(app(config))
+    req
       .get('/show-guest-book')
-      .expect('access-denied')
+      .expect('Unauthorized')
       .expect(401, done)
   });
 
   it('Should give back html when user logged in', (done) => {
-    const sessions = { 123: { username: 'sai', sessionId: 123 } }
-    request(app(config, sessions))
+    const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
+    request(initializeApp(1111, config, sessionsStored, users))
       .get('/show-guest-book')
       .set('Cookie', 'sessionId=123')
       .expect('Content-type', /html/)
@@ -29,8 +33,8 @@ describe('GET /show-guest-book', () => {
 
 describe('POST /add-guest', () => {
   it('Should give back 304 code if name is not provided ', (done) => {
-    const sessions = { 123: { username: 'sai', sessionId: 123 } }
-    request(app(config, sessions))
+    const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
+    request(initializeApp(1111, config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("comment=sai")
@@ -38,8 +42,8 @@ describe('POST /add-guest', () => {
   });
 
   it('Should give back 304 code if comment is not provided ', (done) => {
-    const sessions = { 123: { username: 'sai', sessionId: 123 } }
-    request(app(config, sessions))
+    const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
+    request(initializeApp(1111, config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("name=sai")
@@ -47,12 +51,12 @@ describe('POST /add-guest', () => {
   });
 
   it('Should give back html page after adding guest', (done) => {
-    const sessions = { 123: { username: 'sai', sessionId: 123 } }
-    request(app(config, sessions))
+    const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
+    request(initializeApp(1111, config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("name=sai&comment=yo")
-      .expect('Content-type', 'text/html')
+      .expect('Content-type', /html/)
       .expect(200, done)
   });
 });

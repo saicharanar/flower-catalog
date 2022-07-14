@@ -1,17 +1,18 @@
 const request = require('supertest');
-const { app } = require('../src/app/app');
+const { initializeApp } = require('../src/app/app');
 
 const config = {
-  guestBookPath: 'data/comments.json',
+  guestBookPath: 'test/data/testComments.json',
   fileOptions: {
     defaultFile: 'homepage.html',
     path: 'public',
   },
 };
+const sessionsStored = {};
+const users = {};
+const req = request(initializeApp(1111, config, sessionsStored, users));
 
 describe('/login', () => {
-  const sessionsStored = {};
-  const req = request(app(config, sessionsStored));
   describe('GET', () => {
     it('Should should give back an html', (done) => {
       req
@@ -22,7 +23,7 @@ describe('/login', () => {
 
     it('Should redirect to guest book if already logged in', (done) => {
       const sessionsStored = { 123: { username: 'sai', sessionId: 123 } };
-      request(app(config, sessionsStored))
+      request(initializeApp(1111, config, sessionsStored, users))
         .get('/login')
         .set('Cookie', 'sessionId=123')
         .expect('Location', /guest/)
@@ -48,7 +49,7 @@ describe('/login', () => {
     it('Should give 302 when a valid user logged and creates a session', (done) => {
       const sessionsStored = {};
       const users = { sai: { username: 'sai', password: 'a' } };
-      request(app(config, sessionsStored, users))
+      request(initializeApp(1111, config, sessionsStored, users))
         .post('/login')
         .send('username=sai&password=a')
         .expect('New Session created')
@@ -60,7 +61,7 @@ describe('/login', () => {
     it('Should give 304 when a invalid credentials given', (done) => {
       const sessionsStored = {};
       const users = { sai: { username: 'sai', password: 'a' } };
-      request(app(config, sessionsStored, users))
+      request(initializeApp(1111, config, sessionsStored, users))
         .post('/login')
         .send('username=sai&password=b')
         .expect(304, done)

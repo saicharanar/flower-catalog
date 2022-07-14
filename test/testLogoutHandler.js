@@ -1,36 +1,37 @@
-const { app } = require("../src/app/app");
 const request = require('supertest');
+const { initializeApp } = require('../src/app/app');
 const assert = require('assert');
 
 const config = {
-  guestBookPath: 'data/comments.json',
+  guestBookPath: 'test/data/testComments.json',
   fileOptions: {
     defaultFile: 'homepage.html',
     path: 'public',
   },
 };
+const sessionsStored = {};
+const users = {};
+const req = request(initializeApp(1111, config, sessionsStored, users));
 
 describe('GET /logout', () => {
   it('Should give 401 if no session is alive', (done) => {
-    const sessions = {};
-    request(app(config, sessions))
+    req
       .get('/logout')
-      .expect('Please login first')
+      .expect('Unauthorized')
       .expect(401, done)
   });
 
-  it('Should give 301 if a session is alive', (done) => {
-    const sessions = { 123: { username: 'sai', sessionId: 123 } };
+  it('Should give 302 if a session is alive', (done) => {
+    const sessionsStored = { 123: { username: 'sai', sessionId: 123 } };
     const users = { sai: { username: 'sai', password: 'a' } };
-    request(app(config, sessions, users))
+    request(initializeApp(1111, config, sessionsStored, users))
       .get('/logout')
       .set('Cookie', 'sessionId=123')
       .expect('Set-Cookie', /Max-Age=0/)
-      .expect('Location', '/')
-      .expect('sai loggedOut')
+      .expect('Location', '/homePage.html')
       .expect(302, (err, res) => {
         done(err);
-        assert.ok(!sessions[123]);
+        assert.ok(!sessionsStored[123]);
       })
   });
 });

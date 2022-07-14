@@ -1,8 +1,8 @@
 const request = require('supertest');
-const { app } = require('../src/app/app');
+const { initializeApp } = require('../src/app/app');
 
 const config = {
-  guestBookPath: 'data/comments.json',
+  guestBookPath: 'test/data/testComments.json',
   fileOptions: {
     defaultFile: 'homepage.html',
     path: 'public',
@@ -10,7 +10,7 @@ const config = {
 };
 const sessionsStored = {};
 const users = {};
-const req = request(app(config, sessionsStored, users));
+const req = request(initializeApp(1111, config, sessionsStored, users));
 
 describe('/signup', () => {
   describe('GET', () => {
@@ -23,12 +23,11 @@ describe('/signup', () => {
   });
 
   describe('POST', () => {
-    it('Should give a html page back', (done) => {
+    it('Should redirect to homepage', (done) => {
       req
         .post('/signup')
         .send('username=sai&password=a')
-        .expect('Registered Successfully')
-        .expect('location', '/')
+        .expect('location', '/homePage.html')
         .expect(302, done);
     });
 

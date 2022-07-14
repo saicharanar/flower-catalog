@@ -1,29 +1,37 @@
 const { createGuestBookHandler } = require('./createGuestBookHandler');
 const {
-  createRouter,
-  parseBodyParams,
-  fileHandler,
   injectCookies,
   injectSessions,
 } = require('server');
-const { signupRouter } = require('./signupHandler');
-const { loginRouter } = require('./loginHandler');
+const express = require('express');
+const { serveSignUpPage, createUser } = require('./signupHandler');
+const { serveLoginPage, validateLogin } = require('./loginHandler');
 const { logoutHandler } = require('./logoutHandler');
 const { injectUsers } = require('../injectUsers');
 
-const app = (config, sessions, users) => {
-  const guestBookHandler = createGuestBookHandler(config);
-  return createRouter([
-    parseBodyParams,
-    injectUsers(users),
-    injectCookies,
-    injectSessions(sessions),
-    signupRouter,
-    loginRouter,
-    logoutHandler,
-    guestBookHandler,
-    fileHandler(config),
-  ]);
+
+const initializeApp = (port, config, sessions, users) => {
+  const app = express();
+  const guestHandlers = createGuestBookHandler(config);
+  const { showGuests, addGuest } = guestHandlers();
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.static('public'));
+  app.use(injectUsers(users));
+  app.use(injectCookies);
+  app.use(injectSessions(sessions));
+  app.get('/signup', serveSignUpPage);
+  app.post('/signup', createUser);
+  app.get('/login', serveLoginPage);
+  app.post('/login', validateLogin);
+  app.get('/show-guest-book', showGuests)
+  app.post('/add-guest', addGuest);
+  app.get('/logout', logoutHandler);
+  return app;
 };
 
-module.exports = { app };
+const main = (port, config, sessions, users) => {
+  const app = initializeApp(port, config, sessions, users);
+  app.listen(port, () => console.log(`server bound to ${port}`));
+};
+
+module.exports = { initializeApp, main };
