@@ -41,6 +41,13 @@ const loginRouter = (req, res, next) => {
     return;
   }
 
+  if (req.method === 'GET' && req.session) {
+    res.statusCode = 302;
+    res.setHeader('Location', '/show-guest-book');
+    res.end();
+    return;
+  }
+
   if (req.method === 'GET') {
     res.setHeader('Content-type', 'text/html');
     res.end(createFormPage('login', 'signup'));

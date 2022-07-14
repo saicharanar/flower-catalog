@@ -19,6 +19,15 @@ describe('/login', () => {
         .expect('Content-type', /html/)
         .expect(200, done);
     });
+
+    it('Should redirect to guest book if already logged in', (done) => {
+      const sessionsStored = { 123: { username: 'sai', sessionId: 123 } };
+      request(app(config, sessionsStored))
+        .get('/login')
+        .set('Cookie', 'sessionId=123')
+        .expect('Location', /guest/)
+        .expect(302, done);
+    });
   });
 
   describe('POST', () => {
