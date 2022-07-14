@@ -10,7 +10,7 @@ const config = {
 };
 const sessionsStored = {};
 const users = {};
-const req = request(initializeApp(1111, config, sessionsStored, users));
+const req = request(initializeApp(config, sessionsStored, users));
 
 describe('/signup', () => {
   describe('GET', () => {

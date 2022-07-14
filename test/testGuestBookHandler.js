@@ -10,7 +10,7 @@ const config = {
 };
 const sessionsStored = {};
 const users = {};
-const req = request(initializeApp(1111, config, sessionsStored, users));
+const req = request(initializeApp(config, sessionsStored, users));
 
 
 describe('GET /show-guest-book', () => {
@@ -23,7 +23,7 @@ describe('GET /show-guest-book', () => {
 
   it('Should give back html when user logged in', (done) => {
     const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
-    request(initializeApp(1111, config, sessionsStored, users))
+    request(initializeApp(config, sessionsStored, users))
       .get('/show-guest-book')
       .set('Cookie', 'sessionId=123')
       .expect('Content-type', /html/)
@@ -34,7 +34,7 @@ describe('GET /show-guest-book', () => {
 describe('POST /add-guest', () => {
   it('Should give back 304 code if name is not provided ', (done) => {
     const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
-    request(initializeApp(1111, config, sessionsStored, users))
+    request(initializeApp(config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("comment=sai")
@@ -43,7 +43,7 @@ describe('POST /add-guest', () => {
 
   it('Should give back 304 code if comment is not provided ', (done) => {
     const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
-    request(initializeApp(1111, config, sessionsStored, users))
+    request(initializeApp(config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("name=sai")
@@ -52,7 +52,7 @@ describe('POST /add-guest', () => {
 
   it('Should give back html page after adding guest', (done) => {
     const sessionsStored = { 123: { username: 'sai', sessionId: 123 } }
-    request(initializeApp(1111, config, sessionsStored, users))
+    request(initializeApp(config, sessionsStored, users))
       .post('/add-guest')
       .set('Cookie', 'sessionId=123')
       .send("name=sai&comment=yo")

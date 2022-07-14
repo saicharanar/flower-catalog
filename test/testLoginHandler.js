@@ -10,7 +10,7 @@ const config = {
 };
 const sessionsStored = {};
 const users = {};
-const req = request(initializeApp(1111, config, sessionsStored, users));
+const req = request(initializeApp(config, sessionsStored, users));
 
 describe('/login', () => {
   describe('GET', () => {
@@ -23,7 +23,7 @@ describe('/login', () => {
 
     it('Should redirect to guest book if already logged in', (done) => {
       const sessionsStored = { 123: { username: 'sai', sessionId: 123 } };
-      request(initializeApp(1111, config, sessionsStored, users))
+      request(initializeApp(config, sessionsStored, users))
         .get('/login')
         .set('Cookie', 'sessionId=123')
         .expect('Location', /guest/)
@@ -49,7 +49,7 @@ describe('/login', () => {
     it('Should give 302 when a valid user logged and creates a session', (done) => {
       const sessionsStored = {};
       const users = { sai: { username: 'sai', password: 'a' } };
-      request(initializeApp(1111, config, sessionsStored, users))
+      request(initializeApp(config, sessionsStored, users))
         .post('/login')
         .send('username=sai&password=a')
         .expect('New Session created')
@@ -61,7 +61,7 @@ describe('/login', () => {
     it('Should give 304 when a invalid credentials given', (done) => {
       const sessionsStored = {};
       const users = { sai: { username: 'sai', password: 'a' } };
-      request(initializeApp(1111, config, sessionsStored, users))
+      request(initializeApp(config, sessionsStored, users))
         .post('/login')
         .send('username=sai&password=b')
         .expect(304, done)
