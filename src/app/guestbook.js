@@ -1,71 +1,17 @@
 const { createTag } = require('tag');
-const { createGuestBookPage } = require('./createGuestBookPage');
-const fs = require('fs');
-
-const timeStamp = () => {
-  const currentDate = new Date();
-  const time = currentDate.toLocaleTimeString();
-  const date = currentDate.toLocaleDateString();
-  return { time, date };
-};
 
 class GuestBook {
-  #guestBookPath;
   #guests;
-  constructor(guestBookPath) {
-    this.#guestBookPath = guestBookPath;
-    this.#guests = [];
-  }
-
-  #getGuests() {
-    const guests = fs.readFileSync(this.#guestBookPath, 'utf8');
-    if (guests) {
-      return JSON.parse(guests);
-    }
-    return [];
-  }
-
-  initialize() {
-    this.#guests = this.#getGuests();
-  }
-
-  #save() {
-    fs.writeFileSync(this.#guestBookPath, JSON.stringify(this.#guests), 'utf8');
+  constructor(guests) {
+    this.#guests = guests;
   }
 
   insert(guest) {
     this.#guests.unshift(guest);
-    this.#save();
   }
 
-  showGuestsHandler(request, response) {
-    if (!request.session) {
-      response.sendStatus(401);
-      response.end();
-      return;
-    }
-
-    this.initialize();
-    const page = createGuestBookPage(this.html());
-    response.setHeader('Content-type', 'text/html');
-    response.write(page);
-    response.end();
-    return true;
-  }
-
-  addGuestsHandler(request, response) {
-    const { name, comment } = request.body;
-    if (!name || !comment) {
-      response.sendStatus(304);
-      response.end();
-      return;
-    }
-
-    const { date, time } = timeStamp();
-    this.insert({ name, comment, date, time });
-    response.set('Content-type', 'text/html');
-    response.end(this.html());
-    return true;
+  get guests() {
+    return this.#guests;
   }
 
   html() {
