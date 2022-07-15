@@ -1,19 +1,17 @@
-const { main } = require('./src/app/app');
-const { initializeServer } = require('./src/server/server');
+const { initializeApp } = require('./src/app/app');
 
 const start = () => {
-  const { serveFrom, guestBookPath } = process.env;
+  const { guestBookPath, port } = process.env;
   const config = {
-    guestBookPath: 'data/comments.json',
-    fileOptions: {
-      defaultFile: 'homepage.html',
-      path: 'public',
-    },
+    guestBookPath,
   };
   const sessionsStored = {};
   const users = {};
 
-  main(8888, config, sessionsStored, users);
+  const app = initializeApp(config, sessionsStored, users);
+  app.listen(port, () => {
+    console.log(`server bound to ${port}`);
+  })
 };
 
 start();

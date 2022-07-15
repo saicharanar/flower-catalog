@@ -35,9 +35,4 @@ const initializeApp = (config, sessions, users) => {
   return app;
 };
 
-const main = (port, config, sessions, users) => {
-  const app = initializeApp(config, sessions, users);
-  app.listen(port, () => console.log(`server bound to ${port}`));
-};
-
-module.exports = { initializeApp, main };
+module.exports = { initializeApp };

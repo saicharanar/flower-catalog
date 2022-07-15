@@ -5,11 +5,10 @@ const warnInvalidUserName = (req, res, next) => {
   const invalidMessage = 'Not a valid response';
   const message = createTag(['div', {}, invalidMessage]);
   const page = createFormPage('signup', 'login');
-  res.setHeader('Content-type', 'text/html');
+  res.set('Content-type', 'text/html');
   res.end(page + message);
   return;
 };
-
 
 const createUser = (req, res, next) => {
   const { username, password } = req.body;
