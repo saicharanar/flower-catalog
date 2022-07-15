@@ -11,7 +11,8 @@ class GuestBook {
   }
 
   get guests() {
-    return this.#guests;
+    const { guests } = { guests: this.#guests };
+    return guests;
   }
 
   html() {
